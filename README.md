@@ -16,8 +16,8 @@ An end-to-end data science portfolio project that turns public movie ratings int
 Requires Python 3.10 or newer.
 
 ```bash
-git clone <your-repository-url>
-cd cinematch
+git clone https://github.com/krishcodesforu/personalized-movie-recommender.git
+cd personalized-movie-recommender
 python -m venv .venv
 ```
 
