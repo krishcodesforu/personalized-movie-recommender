@@ -24,7 +24,7 @@ python -m venv .venv
 Activate the virtual environment (PowerShell on Windows):
 
 ```powershell
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
 
 On macOS or Linux, use `source .venv/bin/activate`. Then install and launch:
