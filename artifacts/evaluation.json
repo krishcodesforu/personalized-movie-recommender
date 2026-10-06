@@ -1,0 +1,11 @@
+{
+  "seed": 42,
+  "k": 10,
+  "users_evaluated": 604,
+  "relevant_holdout_items": 9734,
+  "recall_at_10": 0.029503021508775287,
+  "ndcg_at_10": 0.05372825701896186,
+  "catalog_coverage_at_k": 0.14319441593102034,
+  "train_ratings": 80672,
+  "test_ratings": 20164
+}
