@@ -169,7 +169,7 @@ title_to_id = dict(zip(movies["title"], movies["movieId"].astype(int)))
 id_to_title = {movie_id: title for title, movie_id in title_to_id.items()}
 with st.sidebar:
     st.markdown("## Build your taste profile")
-    st.caption("Pick films you have seen and rate them. Your profile stays in this browser session unless you download it.")
+    st.caption("Pick films you have seen and rate them. Ratings are processed by the app host for this session and aren't linked to an account.")
     uploaded = st.file_uploader("Restore a saved profile", type=["json"])
     uploaded_profile = profile_from_upload(uploaded, model)
     prior_selected = [id_to_title[movie_id] for movie_id in uploaded_profile if movie_id in id_to_title]
@@ -184,7 +184,7 @@ with st.sidebar:
     recommendation_count = st.slider("Number of recommendations", min_value=5, max_value=20, value=10)
 
 if selected_titles:
-    st.markdown('<div class="cm-section-label">Step 1 · Tell us what you like</div><div class="cm-section-title">Rate your movies</div><p class="cm-section-copy">Use half-star steps. Your ratings only shape this recommendation session.</p>', unsafe_allow_html=True)
+    st.markdown('<div class="cm-section-label">Step 1 · Tell us what you like</div><div class="cm-section-title">Rate your movies</div><p class="cm-section-copy">Use half-star steps. Ratings are sent to the app host for recommendations and are not saved to an account.</p>', unsafe_allow_html=True)
     seed_rows = movies[movies["title"].isin(selected_titles)][["movieId", "title", "genres"]].copy()
     seed_rows["Your rating"] = [uploaded_profile.get(int(movie_id), 4.0) for movie_id in seed_rows["movieId"]]
     rating_table = st.data_editor(

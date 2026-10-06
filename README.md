@@ -2,6 +2,8 @@
 
 An end-to-end data science portfolio project that turns public movie ratings into an interactive recommender. Build a profile from movies you have seen, rate them, and get recommendations with short explanations.
 
+> **Try the live app:** [Open CineMatch](https://personalized-movie-recommender-lzy3hukl6tuvmaws4wwat3.streamlit.app/)
+
 ## What it demonstrates
 
 - Automated public dataset download and validation
@@ -63,7 +65,7 @@ The trained model and aggregate evaluation report are tracked in `artifacts/`. D
 3. Choose Hybrid, Collaborative, Content-based, or Popular recommendations.
 4. Review the predicted preference score and the “because you liked” explanation. Export recommendations as CSV or save your profile as JSON for a later session.
 
-Profiles are kept in the browser session unless you download them. The app does not require an account. In a hosted deployment, ratings entered in the app are sent to the server running the app to calculate recommendations; the project does not save those profile ratings.
+The app does not require an account. Ratings you enter are sent to the app host for the current session, used to calculate recommendations, and not saved to a personal account. You can download your profile if you want to reuse it later.
 
 ## How it works
 
@@ -97,7 +99,7 @@ artifacts/               Trained model and aggregate evaluation report
 
 Suggested post (replace the bracketed results after running `cinematch evaluate`):
 
-> I built CineMatch, an end-to-end personalized movie recommendation system. It combines collaborative filtering, genre similarity, and popularity in a web app where users can rate movies and inspect explainable picks. On a deterministic per-user holdout, it achieved Recall@10 0.0295 and NDCG@10 0.0537, with 14.32% catalog coverage. The results are a baseline for future tuning, not a claim of production performance. Code and model card: https://github.com/krishcodesforu/personalized-movie-recommender
+> I built CineMatch, an end-to-end personalized movie recommendation system. It combines collaborative filtering, genre similarity, and popularity in a web app where users can rate movies and inspect explainable picks. On a deterministic per-user holdout, it achieved Recall@10 0.0295 and NDCG@10 0.0537, with 14.32% catalog coverage. The results are a baseline for future tuning, not a claim of production performance. Try it: https://personalized-movie-recommender-lzy3hukl6tuvmaws4wwat3.streamlit.app/ · Code and model card: https://github.com/krishcodesforu/personalized-movie-recommender
 
 ## Limitations and next steps
 
