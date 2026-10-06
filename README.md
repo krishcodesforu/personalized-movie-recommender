@@ -21,7 +21,13 @@ cd cinematch
 python -m venv .venv
 ```
 
-Activate the virtual environment, then install and launch:
+Activate the virtual environment (PowerShell on Windows):
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+On macOS or Linux, use `source .venv/bin/activate`. Then install and launch:
 
 ```bash
 python -m pip install --upgrade pip
