@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use CineMatch, please cite the project and the upstream MovieLens dataset paper."
+title: "CineMatch: Personalized Movie Recommendations"
+version: 1.0.0
+date-released: 2026-10-07
+authors:
+  - name: "CineMatch Project"
+references:
+  - type: article
+    authors:
+      - family-names: Harper
+        given-names: "F. Maxwell"
+      - family-names: Konstan
+        given-names: "Joseph A."
+    title: "The MovieLens Datasets: History and Context"
+    journal: "ACM Transactions on Interactive Intelligent Systems"
+    year: 2015
+    volume: 5
+    issue: 4
+    doi: 10.1145/2827872

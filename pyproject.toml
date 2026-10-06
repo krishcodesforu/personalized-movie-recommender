@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cinematch-recommender"
+version = "1.0.0"
+description = "An end-to-end personalized movie recommendation system portfolio project"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "CineMatch Project" }]
+dependencies = [
+  "joblib>=1.3,<2",
+  "numpy>=1.24,<3",
+  "pandas>=2.0,<3",
+  "plotly>=5.18,<7",
+  "scikit-learn>=1.3,<2",
+  "scipy>=1.10,<2",
+  "streamlit>=1.32,<2",
+]
+
+[project.scripts]
+cinematch = "cinematch.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
