@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import html
 import json
 
@@ -32,56 +33,83 @@ st.markdown(
         --cm-accent: #c9f36a;
         --cm-accent-dark: #90bd35;
     }
+    @keyframes cm-ambient { 0% { background-position: 75% 0%, 0 0; } 100% { background-position: 55% 15%, 0 0; } }
+    @keyframes cm-rise { from { opacity:0; translate:0 16px; } to { opacity:1; translate:0 0; } }
+    @keyframes cm-card-in { from { opacity:0; translate:0 18px; scale:.985; } to { opacity:1; translate:0 0; scale:1; } }
+    @keyframes cm-float { 0%,100% { translate:0 0; } 50% { translate:0 -3px; } }
+    @keyframes cm-shimmer { 0%,70%,100% { transform:translateX(-150%) skewX(-18deg); } 35% { transform:translateX(260%) skewX(-18deg); } }
+    @keyframes cm-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(201,243,106,.25); } 50% { box-shadow:0 0 0 6px rgba(201,243,106,0); } }
+    @keyframes cm-gradient { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
     html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
-    .stApp { background: radial-gradient(ellipse at 76% 0%, rgba(48,74,56,.19), transparent 38%), var(--cm-bg); color: var(--cm-text); }
+    .stApp { background: radial-gradient(ellipse at 76% 0%, rgba(74,105,65,.23), transparent 38%), radial-gradient(ellipse at 4% 38%, rgba(36,76,65,.13), transparent 34%), var(--cm-bg); background-size:150% 150%,150% 150%; animation:cm-ambient 24s ease-in-out infinite alternate; color: var(--cm-text); }
     [data-testid="stHeader"] { background: transparent; }
     [data-testid="stSidebar"] { background: #11161d; border-right: 1px solid var(--cm-border); }
     [data-testid="stSidebar"] > div:first-child { padding-top: 1.6rem; }
     .block-container { max-width: 1320px; padding-top: 1.6rem; padding-bottom: 2.8rem; }
     h1, h2, h3 { font-family: 'Segoe UI', system-ui, sans-serif; letter-spacing: -.035em; color: var(--cm-text); }
-    .cm-topbar { display:flex; align-items:center; justify-content:space-between; padding: .2rem 0 1.4rem; border-bottom:1px solid var(--cm-border); margin-bottom:2.25rem; }
+    .cm-topbar { display:flex; align-items:center; justify-content:space-between; padding: .2rem 0 1.4rem; border-bottom:1px solid var(--cm-border); margin-bottom:2.25rem; animation:cm-rise .65s cubic-bezier(.2,.7,.2,1) both; }
     .cm-brand { display:flex; align-items:center; gap:.65rem; color:var(--cm-text); font-family:'Segoe UI',system-ui,sans-serif; font-size:1.1rem; font-weight:800; letter-spacing:-.04em; }
-    .cm-logo { display:grid; place-items:center; width:2.15rem; height:2.15rem; background:var(--cm-accent); border-radius:.75rem; color:#1b2510; font-size:1.08rem; }
+    .cm-logo { display:grid; place-items:center; width:2.15rem; height:2.15rem; background:var(--cm-accent); border-radius:.75rem; color:#1b2510; font-size:1.08rem; animation:cm-float 4s ease-in-out infinite; transition:transform .25s ease, box-shadow .25s ease; }
+    .cm-brand:hover .cm-logo { transform:rotate(-8deg) scale(1.08); box-shadow:0 0 22px rgba(201,243,106,.28); }
     .cm-topmeta { color:var(--cm-muted); font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; }
-    .cm-hero { padding:1.4rem 0 1.25rem; }
-    .cm-eyebrow { color:var(--cm-accent); font-size:.73rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase; margin-bottom:.8rem; }
+    .cm-hero { padding:1.4rem 0 1.25rem; animation:cm-rise .75s .08s cubic-bezier(.2,.7,.2,1) both; }
+    .cm-eyebrow { display:flex; align-items:center; gap:.55rem; color:var(--cm-accent); font-size:.73rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase; margin-bottom:.8rem; }
+    .cm-eyebrow-dot { width:.48rem; height:.48rem; border-radius:50%; background:var(--cm-accent); animation:cm-pulse 2s ease-out infinite; }
     .cm-hero h1 { max-width:820px; font-size:clamp(2.4rem,5vw,4.35rem); line-height:1.03; margin:0 0 1rem; }
-    .cm-hero h1 span { color:var(--cm-accent); }
-    .cm-hero p { max-width:730px; color:#aeb5bd; font-size:1.08rem; line-height:1.7; margin:0; }
+    .cm-hero h1 span { color:var(--cm-accent); background:linear-gradient(100deg,#c9f36a 5%,#f2ffd2 48%,#aee747 88%); background-size:220% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:cm-gradient 9s ease-in-out infinite; }
+    .cm-hero p { max-width:730px; color:#aeb5bd; font-size:1.08rem; line-height:1.7; margin:0; animation:cm-rise .7s .2s both; }
     .cm-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.8rem; margin:1.8rem 0 2.2rem; }
-    .cm-stat { background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)); border:1px solid var(--cm-border); border-radius:1rem; padding:1.05rem 1.15rem; }
+    .cm-stat { background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)); border:1px solid var(--cm-border); border-radius:1rem; padding:1.05rem 1.15rem; transition:transform .25s ease,border-color .25s ease,background .25s ease; animation:cm-rise .6s both; }
+    .cm-stat:hover { transform:translateY(-4px); border-color:rgba(201,243,106,.35); background:linear-gradient(145deg,rgba(201,243,106,.08),rgba(255,255,255,.018)); }
+    .cm-stat:nth-child(2) { animation-delay:.08s; } .cm-stat:nth-child(3) { animation-delay:.16s; } .cm-stat:nth-child(4) { animation-delay:.24s; }
     .cm-stat-label { color:var(--cm-muted); font-size:.78rem; }
     .cm-stat-value { color:var(--cm-text); font-family:'Segoe UI',system-ui,sans-serif; font-size:1.45rem; font-weight:800; margin-top:.2rem; }
     .cm-section-label { color:var(--cm-accent); font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:.2rem 0 .65rem; }
     .cm-section-title { font-family:'Segoe UI',system-ui,sans-serif; font-size:1.6rem; font-weight:800; letter-spacing:-.04em; margin:0 0 .35rem; }
     .cm-section-copy { color:var(--cm-muted); margin:0 0 1rem; }
-    .cm-card { min-height:205px; background:linear-gradient(150deg,#1c2529,#151a21 70%); border:1px solid var(--cm-border); border-radius:1.15rem; padding:1.15rem 1.2rem; margin:.25rem 0 .8rem; box-shadow:0 12px 32px rgba(0,0,0,.13); }
+    .cm-card { min-height:205px; background:linear-gradient(150deg,#1c2529,#151a21 70%); border:1px solid var(--cm-border); border-radius:1.15rem; padding:1.15rem 1.2rem; margin:.25rem 0 .8rem; box-shadow:0 12px 32px rgba(0,0,0,.13); animation:cm-card-in .55s cubic-bezier(.2,.7,.2,1) var(--cm-delay,0s) both; transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease,background .28s ease; }
+    .cm-card:hover { transform:translateY(-7px); border-color:rgba(201,243,106,.36); box-shadow:0 20px 44px rgba(0,0,0,.3),0 0 0 1px rgba(201,243,106,.07); background:linear-gradient(150deg,#25332b,#151a21 78%); }
     .cm-card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.15rem; }
     .cm-rank { color:#78848e; font-size:.76rem; font-weight:700; letter-spacing:.12em; }
-    .cm-score { color:#1a2410; background:var(--cm-accent); border-radius:999px; padding:.34rem .65rem; font-size:.76rem; font-weight:800; }
+    .cm-score { color:#1a2410; background:var(--cm-accent); border-radius:999px; padding:.34rem .65rem; font-size:.76rem; font-weight:800; transition:transform .25s ease,box-shadow .25s ease; }
+    .cm-card:hover .cm-score { transform:scale(1.06) rotate(-2deg); box-shadow:0 0 18px rgba(201,243,106,.2); }
     .cm-card h3 { font-size:1.12rem; line-height:1.35; margin:0 0 .7rem; }
     .cm-tags { display:flex; flex-wrap:wrap; gap:.38rem; margin-bottom:1rem; }
     .cm-tag { color:#c0c8ce; background:rgba(255,255,255,.065); border:1px solid rgba(255,255,255,.04); border-radius:999px; padding:.25rem .52rem; font-size:.68rem; }
     .cm-reason { color:#aeb7bd; font-size:.82rem; line-height:1.45; margin:0; }
     .cm-reason strong { color:var(--cm-accent); font-weight:600; }
     .cm-empty { border:1px dashed rgba(201,243,106,.25); border-radius:1rem; padding:2rem; background:rgba(201,243,106,.025); }
-    .cm-how { background:var(--cm-panel); border:1px solid var(--cm-border); border-radius:1rem; padding:1rem 1.1rem; min-height:112px; }
+    .cm-how { background:var(--cm-panel); border:1px solid var(--cm-border); border-radius:1rem; padding:1rem 1.1rem; min-height:112px; transition:transform .25s ease,border-color .25s ease,background .25s ease; }
+    .cm-how:hover { transform:translateY(-4px); border-color:rgba(201,243,106,.3); background:#19221d; }
+    .cm-sidebar-intro { color:var(--cm-muted); font-size:.84rem; line-height:1.5; margin:-.25rem 0 .45rem; }
+    .cm-sidebar-privacy { color:#7f8992; font-size:.7rem; line-height:1.45; margin:-.3rem 0 .85rem; }
+    .cm-profile-meter { margin:.3rem 0 1rem; padding:.75rem .8rem; background:rgba(255,255,255,.035); border:1px solid var(--cm-border); border-radius:.8rem; }
+    .cm-profile-top { display:flex; justify-content:space-between; gap:.5rem; color:#cbd1d3; font-size:.73rem; margin-bottom:.5rem; }
+    .cm-profile-top strong { color:var(--cm-accent); font-weight:700; }
+    .cm-track { height:.35rem; width:100%; background:rgba(255,255,255,.09); border-radius:999px; overflow:hidden; }
+    .cm-track-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#8eae43,var(--cm-accent)); transition:width .45s cubic-bezier(.2,.7,.2,1); box-shadow:0 0 12px rgba(201,243,106,.28); }
     .cm-how-num { color:var(--cm-accent); font-size:.72rem; letter-spacing:.1em; font-weight:800; }
     .cm-how-title { font-weight:700; margin:.35rem 0 .2rem; }
     .cm-how-copy { color:var(--cm-muted); font-size:.82rem; line-height:1.45; }
     .cm-footer { color:#7f8992; font-size:.76rem; border-top:1px solid var(--cm-border); margin-top:2.2rem; padding-top:1rem; }
     div[data-testid="stMetric"] { background:var(--cm-panel); border:1px solid var(--cm-border); border-radius:.8rem; padding:.8rem 1rem; }
     div[data-testid="stMetricLabel"] { color:var(--cm-muted); }
-    .stButton > button[kind="primary"] { background:var(--cm-accent); border:0; color:#1d2713; font-weight:800; border-radius:.75rem; min-height:2.85rem; }
-    .stButton > button[kind="primary"]:hover { background:#d9ff87; color:#1d2713; }
-    .stButton > button:not([kind="primary"]) { border-color:var(--cm-border); border-radius:.75rem; }
+    .stButton > button[kind="primary"] { position:relative; overflow:hidden; background:var(--cm-accent); border:0; color:#1d2713; font-weight:800; border-radius:.75rem; min-height:2.85rem; transition:transform .2s ease,box-shadow .2s ease,background .2s ease; }
+    .stButton > button[kind="primary"]::after { content:""; position:absolute; top:-40%; left:0; width:34%; height:180%; background:rgba(255,255,255,.32); transform:translateX(-150%) skewX(-18deg); animation:cm-shimmer 7s ease-in-out infinite; pointer-events:none; }
+    .stButton > button[kind="primary"]:hover { background:#d9ff87; color:#1d2713; transform:translateY(-2px); box-shadow:0 10px 25px rgba(201,243,106,.16); }
+    .stButton > button:not([kind="primary"]) { border-color:var(--cm-border); border-radius:.75rem; transition:transform .2s ease,border-color .2s ease,background .2s ease; }
+    .stButton > button:not([kind="primary"]):hover { border-color:rgba(201,243,106,.4); color:var(--cm-accent); transform:translateY(-1px); }
     [data-testid="stTabs"] button { color:#aeb5bd; }
     [data-testid="stTabs"] button[aria-selected="true"] { color:var(--cm-accent); }
     [data-testid="stExpander"] { background:rgba(255,255,255,.02); border:1px solid var(--cm-border); border-radius:.8rem; }
+    [data-testid="stPlotlyChart"] { animation:cm-rise .55s both; }
     @media (max-width: 760px) {
         .cm-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
         .cm-topmeta { display:none; }
         .cm-hero { padding-top:.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
     }
     </style>
     """,
@@ -129,7 +157,7 @@ def render_movie_card(row: pd.Series, rank: int) -> None:
     reason = html.escape(str(row["reason"]))
     st.markdown(
         f"""
-        <article class="cm-card">
+    <article class="cm-card" style="--cm-delay:{min((rank - 1) * 0.055, 0.6):.3f}s">
           <div class="cm-card-top"><span class="cm-rank">PICK {rank:02d}{html.escape(year)}</span><span class="cm-score">✦ {score:.2f} / 5</span></div>
           <h3>{title}</h3>
           <div class="cm-tags">{tags}</div>
@@ -149,7 +177,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<section class="cm-hero"><div class="cm-eyebrow">Your personal movie guide</div><h1>A better next movie,<br><span>picked for your taste.</span></h1><p>Rate a few films you already love. CineMatch blends community ratings and genre signals to find a thoughtful next watch—and shows you why it made the list.</p></section>',
+    '<section class="cm-hero"><div class="cm-eyebrow"><span class="cm-eyebrow-dot"></span>Your personal movie guide</div><h1>A better next movie,<br><span>picked for your taste.</span></h1><p>Rate a few films you already love. CineMatch blends your taste profile with community ratings and genre signals to find a thoughtful next watch—and shows you why it made the list.</p></section>',
     unsafe_allow_html=True,
 )
 
@@ -169,17 +197,39 @@ title_to_id = dict(zip(movies["title"], movies["movieId"].astype(int)))
 id_to_title = {movie_id: title for title, movie_id in title_to_id.items()}
 with st.sidebar:
     st.markdown("## Build your taste profile")
-    st.caption("Pick films you have seen and rate them. Ratings are processed by the app host for this session and aren't linked to an account.")
+    st.markdown('<div class="cm-sidebar-intro">Pick at least two films you have seen, then rate them. Your ratings shape a personal list in seconds.</div>', unsafe_allow_html=True)
     uploaded = st.file_uploader("Restore a saved profile", type=["json"])
     uploaded_profile = profile_from_upload(uploaded, model)
     prior_selected = [id_to_title[movie_id] for movie_id in uploaded_profile if movie_id in id_to_title]
+    uploaded_token = hashlib.sha256(uploaded.getvalue()).hexdigest() if uploaded is not None else None
+    if uploaded_token is not None and uploaded_token != st.session_state.get("_loaded_profile_token"):
+        st.session_state["taste_titles"] = prior_selected
+        st.session_state.pop("profile_ratings", None)
+        st.session_state["_loaded_profile_token"] = uploaded_token
+    elif "taste_titles" not in st.session_state:
+        st.session_state["taste_titles"] = prior_selected
+    if uploaded is None:
+        st.session_state.pop("_loaded_profile_token", None)
+    sample_candidates = ["Toy Story (1995)", "Matrix, The (1999)", "Jurassic Park (1993)", "Shawshank Redemption, The (1994)"]
+    sample_titles = [title for title in sample_candidates if title in title_to_id]
+    if sample_titles:
+        def load_sample_profile() -> None:
+            st.session_state["taste_titles"] = sample_titles
+            st.session_state.pop("profile_ratings", None)
+
+        st.button("Try a sample profile", on_click=load_sample_profile, use_container_width=True, help="Loads four familiar movies so you can preview the recommendations.")
     selected_titles = st.multiselect(
         "Movies you have watched",
         options=movies["title"].tolist(),
-        default=prior_selected,
         placeholder="Search titles…",
         help="Choose at least two movies for personalized recommendations.",
+        key="taste_titles",
     )
+    selected_count = len(selected_titles)
+    profile_progress = min(selected_count / 2, 1) * 100
+    profile_status = "Add 2 films to personalize" if selected_count == 0 else ("Add 1 more film to personalize" if selected_count == 1 else "Personalized profile ready")
+    st.markdown(f'<div class="cm-profile-meter"><div class="cm-profile-top"><span>Your taste profile</span><strong>{selected_count} selected</strong></div><div class="cm-track"><div class="cm-track-fill" style="width:{profile_progress:.0f}%"></div></div><div class="cm-profile-top" style="margin:.45rem 0 0;color:#8f9a9d"><span>{profile_status}</span></div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="cm-sidebar-privacy">Ratings are processed by the app host for this session and are not linked to an account.</div>', unsafe_allow_html=True)
     strategy = st.selectbox("Recommendation style", ["Hybrid", "Collaborative", "Content-based", "Popular"], help="Hybrid balances similarity, genres, and community popularity.")
     recommendation_count = st.slider("Number of recommendations", min_value=5, max_value=20, value=10)
 
